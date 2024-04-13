@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class ITarea {// Interfaz para las tareas
+public:
+    virtual string getNombre() const = 0;
+    virtual string getAsignadoA() const = 0;
+    virtual double getTiempoEstimado() const = 0;
+    virtual ~ITarea() {}
+};
+
+class Tarea : public ITarea {// Clase concreta para las tareas
+private:
+    string nombre;
+    string asignadoA;
+    double tiempoEstimado;
+public:
+    Tarea(string nombre, string asignadoA, double tiempoEstimado)
+        : nombre(nombre), asignadoA(asignadoA), tiempoEstimado(tiempoEstimado) {}
+    string getNombre() const override {
+        return nombre;
+    }
+    string getAsignadoA() const override {
+        return asignadoA;
+    }
+    double getTiempoEstimado() const override {
+        return tiempoEstimado;
+    }
+};
+class IProyecto { // Interfaz para los proyectos
+public:
+    virtual int getId() const = 0;
+    virtual string getNombre() const = 0;
+    virtual string getFechaInicio() const = 0;
+    virtual void agregarTarea(ITarea* tarea) = 0;
+    virtual ~IProyecto() {}
+};
+class Proyecto : public IProyecto { // Clase concreta para los proyectos
+private:
+    int id;
+    string nombre;
+    string fechaInicio;
+    vector<ITarea*> tareas;
+public:
+    Proyecto(int id, string nombre, string fechaInicio)
+        : id(id), nombre(nombre), fechaInicio(fechaInicio) {}
+    int getId() const override {
+        return id;
+    }
+    string getNombre() const override {
+        return nombre;
+    }
+    string getFechaInicio() const override {
+        return fechaInicio;
+    }
+    void agregarTarea(ITarea* tarea) override {
+        tareas.push_back(tarea);
+    }
+};
+int main() {
+    ITarea* t1 = new Tarea("Hacer encuesta", "Juan", 5.5);
+    ITarea* t2 = new Tarea("Revisar informe", "María", 3.0);
+    ITarea* t3 = new Tarea("Implementar areglos", "Pedro", 8.0);
+    IProyecto* p1 = new Proyecto(1, "Proyecto 2024", "2024-04-11");
+    p1->agregarTarea(t1);
+    p1->agregarTarea(t2);
+    p1->agregarTarea(t3);
+    delete t1; // Liberar la memoria de las tareas y el proyecto
+    delete t2;
+    delete t3;
+    delete p1;
+    return 0;
+}
