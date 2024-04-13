@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+class ITarea { // Interfaz para las tareas
+public:
+    virtual string getNombre() const = 0;
+    virtual string getAsignadoA() const = 0;
+    virtual double getTiempoEstimado() const = 0;
+    virtual ~ITarea() {}
+};
+class Tarea : public ITarea { // Clase concreta para las tareas
+private:
+    string nombre;
+    string asignadoA;
+    double tiempoEstimado;
+public:
+    Tarea(string nombre, string asignadoA, double tiempoEstimado)
+        : nombre(nombre), asignadoA(asignadoA), tiempoEstimado(tiempoEstimado) {}
+
+    string getNombre() const override {
+        return nombre;
+    }
+    string getAsignadoA() const override {
+        return asignadoA;
+    }
+    double getTiempoEstimado() const override {
+        return tiempoEstimado;
+    }
+};
+void mostrarInformacionTarea(const ITarea& tarea) { // Función que trabaja con instancias de la clase padre ITarea
+    cout << "Nombre de la tarea: " << tarea.getNombre() << endl;
+    cout << "Asignado a: " << tarea.getAsignadoA() << endl;
+    cout << "Tiempo estimado: " << tarea.getTiempoEstimado() << " horas" << endl;
+    cout << endl;
+}
+int main() {
+    Tarea tarea("Hacer encuesta", "Juan", 5.5); // Crear una instancia de la clase Tarea
+    cout << "Informacion de la tarea usando la clase Tarea:" << endl;
+    mostrarInformacionTarea(tarea);
+    cout << "Informacion de la tarea usando la interfaz ITarea:" << endl;
+    mostrarInformacionTarea(tarea);
+    return 0;
+}
