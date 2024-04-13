@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+class IInformacionTarea { // Interfaz para obtener información de una tarea
+public:
+    virtual string getNombre() const = 0;
+    virtual string getAsignadoA() const = 0;
+    virtual double getTiempoEstimado() const = 0;
+    virtual ~IInformacionTarea() {}
+};
+class IGestionTarea { // Interfaz para gestionar una tarea
+public:
+    virtual void completarTarea() = 0;
+    virtual void asignarResponsable(const string& nombre) = 0;
+    virtual ~IGestionTarea() {}
+};
+class Tarea : public IInformacionTarea, public IGestionTarea { // Clase concreta para las tareas
+private:
+    string nombre;
+    string asignadoA;
+    double tiempoEstimado;
+    bool completada;
+public:
+    Tarea(string nombre, string asignadoA, double tiempoEstimado)
+        : nombre(nombre), asignadoA(asignadoA), tiempoEstimado(tiempoEstimado), completada(false) {}
+    string getNombre() const override {
+        return nombre;
+    }
+    string getAsignadoA() const override {
+        return asignadoA;
+    }
+    double getTiempoEstimado() const override {
+        return tiempoEstimado;
+    }
+    void completarTarea() override {
+        completada = true;
+    }
+    void asignarResponsable(const string& nombre) override {
+        asignadoA = nombre;
+    }
+};
+class IInformacionProyecto { // Interfaz para obtener información de un proyecto
+public:
+    virtual int getId() const = 0;
+    virtual string getNombre() const = 0;
+    virtual string getFechaInicio() const = 0;
+    virtual ~IInformacionProyecto() {}
+};
+class IGestionProyecto { // Interfaz para gestionar un proyecto
+public:
+    virtual void agregarTarea(IInformacionTarea* tarea) = 0;
+    virtual ~IGestionProyecto() {}
+};
+
+class Proyecto : public IInformacionProyecto, public IGestionProyecto { // Clase concreta para los proyectos
+private:
+    int id;
+    string nombre;
+    string fechaInicio;
+    vector<IInformacionTarea*> tareas;
+public:
+    Proyecto(int id, string nombre, string fechaInicio)
+        : id(id), nombre(nombre), fechaInicio(fechaInicio) {}
+
+    int getId() const override {
+        return id;
+    }
+    string getNombre() const override {
+        return nombre;
+    }
+    string getFechaInicio() const override {
+        return fechaInicio;
+    }
+    void agregarTarea(IInformacionTarea* tarea) override {
+        tareas.push_back(tarea);
+    }
+};
+int main() {
+    Tarea tarea("Hacer encuesta", "Juan", 5.5);
+    Proyecto proyecto(1, "Proyecto 2024", "2024-04-11");
+    proyecto.agregarTarea(&tarea);
+    return 0;
+}
