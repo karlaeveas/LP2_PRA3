@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Tarea {
+private:
+    string nombre;
+    string asignadoA;
+    double tiempoEstimado;
+public:
+    Tarea(string nombre, string asignadoA, double tiempoEstimado)
+        : nombre(nombre), asignadoA(asignadoA), tiempoEstimado(tiempoEstimado) {}
+    string getNombre() const {
+        return nombre;
+    }
+    string getAsignadoA() const {
+        return asignadoA;
+    }
+    double getTiempoEstimado() const {
+        return tiempoEstimado;
+    }
+};
+class Proyecto {
+private:
+    int id;
+    string nombre;
+    string fechaInicio;
+    Tarea* tareas[100] = { nullptr }; // Inicializar el arreglo con nullptr
+    int numTareas;
+
+public:
+    Proyecto(int id, string nombre, string fechaInicio)
+        : id(id), nombre(nombre), fechaInicio(fechaInicio), numTareas(0) {}
+    int getId() const {
+        return id;
+    }
+    string getNombre() const {
+        return nombre;
+    }
+    string getFechaInicio() const {
+        return fechaInicio;
+    }
+    void agregarTarea(Tarea* tarea) {
+        if (numTareas < 100) {
+            tareas[numTareas++] = tarea;
+        }
+        else {
+            cout << "No se pueden agregar más tareas" << endl;
+        }
+    }
+};
+int main() {
+    Tarea* t1 = new Tarea("Hacer encuesta", "Juan", 5.5);
+    Tarea* t2 = new Tarea("Revisar informe", "María", 3.0);
+    Tarea* t3 = new Tarea("Implementar areglos", "Pedro", 8.0);
+    Proyecto* p1 = new Proyecto(1, "Proyecto 2024", "2024-04-11");
+    p1->agregarTarea(t1);
+    p1->agregarTarea(t2);
+    p1->agregarTarea(t3);
+    return 0;
+}
